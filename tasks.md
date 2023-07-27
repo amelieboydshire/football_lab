@@ -5,7 +5,7 @@ Each of the questions/tasks below can be answered using a `SELECT` query. When y
 1) Find all the matches from 2017.
 
 ```sql
-SELECT * from matches WHERE season = 2017
+SELECT * from matches WHERE season = 2017;
 
 
 
@@ -47,14 +47,7 @@ SELECT hometeam FROM matches WHERE hometeam LIKE '%City%' GROUP BY hometeam;
 
 ```sql
 SELECT code FROM divisions WHERE country = 'France';
-SELECT COUNT(DISTINCT team) AS different_teams_count
-FROM (
-    SELECT hometeam AS team FROM matches WHERE division_code IN ('F1', 'F2')
-    
-    UNION
-    
-    SELECT awayteam AS team FROM matches WHERE division_code IN ('F1', 'F2')
-) AS all_teams;
+SELECT COUNT(DISTINCT hometeam) FROM matches WHERE division_code IN ('F1', 'F2');
 
 
 ```
@@ -62,7 +55,7 @@ FROM (
 7) Have Huddersfield played Swansea in any of the recorded matches?
 
 ```sql
-<!-- Copy solution here -->
+SELECT COUNT(*) FROM matches WHERE (hometeam = 'Huddesfield' AND awayteam = 'Swansea') OR (hometeam = 'Swansea' AND awayteam = 'Huddersfield');
 
 
 ```
@@ -70,7 +63,7 @@ FROM (
 8) How many draws were there in the `Eredivisie` between 2010 and 2015?
 
 ```sql
-<!-- Copy solution here -->
+SELECT COUNT(ftr) FROM matches WHERE division_code = 'N1' AND ftr = 'D' AND (season BETWEEN 2010 AND 2015);
 
 
 ```
@@ -78,7 +71,7 @@ FROM (
 9) Select the matches played in the Premier League in order of total goals scored from highest to lowest. When two matches have the same total the match with more home goals should come first.
 
 ```sql
-<!-- Copy solution here -->
+SELECT * FROM matches WHERE division_code  = 'E0' ORDER BY (fthg + ftag) DESC, fthg DESC;
 
 
 ```
@@ -86,8 +79,7 @@ FROM (
 10) In which division and which season were the most goals scored?
 
 ```sql
-<!-- Copy solution here -->
-
+SELECT division_code, season, SUM (fthg + ftag) FROM matches GROUP BY division_code, season ORDER BY sum DESC LIMIT 1;
 
 ```
 
